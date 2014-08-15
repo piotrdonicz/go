@@ -2,11 +2,17 @@
 
 // Module dependencies.
 var express = require('express');
+var exphbs = require('express-handlebars');
+
 var app = express();
+
+// Set templating engine.
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 // Routing
 app.get('/', function(req, res) {
-    res.send('Hello World');
+    res.render('home');
 });
 
 // Server
