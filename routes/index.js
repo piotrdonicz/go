@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * GET: Return the home page containing an empty form.
  */
@@ -10,11 +12,11 @@ exports.index = function(req, res) {
  * POST: Process a submitted URL.
  */
 exports.shorten = function(req, res) {
-    fullUri = req.body.fullUri;
-    shortUri = req.body.shortUri;
+    var fullUri = req.body.fullUri;
+    var shortUri = req.body.shortUri;
 
     // TODO: Put the redirect into the DB here
-    console.log('Shortening ' + fullUri +' to ' + shortUri);
+    console.log('Shortening ' + fullUri + ' to ' + shortUri);
 
     res.redirect('/');
 };
@@ -37,7 +39,7 @@ exports.redirect = function(req, res) {
     var fullUri = '';
 
     // TODO: Look up shortcode in DB here.
-    if (shortUri == 'bw') {
+    if (shortUri === 'bw') {
         exists = true;
         fullUri = 'http://www.brandwatch.com/';
     }
