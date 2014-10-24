@@ -1,8 +1,8 @@
 'use strict';
 
 // Module dependencies.
-var express = require('express');
 var bodyParser = require('body-parser');
+var express = require('express');
 var exphbs = require('express-handlebars');
 var routes = require('./routes');
 
