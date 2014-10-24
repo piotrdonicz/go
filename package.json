@@ -2,9 +2,14 @@
   "name": "go",
   "description": "Go URL shortener",
   "version": "0.0.1",
+  "author": {
+    "name": "Allard van Helbergen",
+    "email": "allard@brandwatch.com"
+  },
   "private": true,
   "dependencies": {
     "express": "^4.1.0",
     "express-handlebars": "^1.0.1"
-  }
+  },
+  "main": "server.js"
 }
