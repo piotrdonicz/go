@@ -9,7 +9,15 @@ exports.index = function(req, res) {
 /**
  * POST: Process a submitted URL.
  */
-// TODO
+exports.shorten = function(req, res) {
+    fullUri = req.body.fullUri;
+    shortUri = req.body.shortUri;
+
+    // TODO: Put the redirect into the DB here
+    console.log('Shortening ' + fullUri +' to ' + shortUri);
+
+    res.redirect('/');
+};
 
 
 /**
@@ -24,19 +32,20 @@ exports.notFound = function(req, res) {
  * GET: Determines the URL to redirect to based on supplied shortcode.
  */
 exports.redirect = function(req, res) {
-    var shortcode = req.params.shortcode;
+    var shortUri = req.params.shortcode;
     var exists = false;
-    var fullURI = '';
+    var fullUri = '';
 
-    // Look up shortcode in DB
-    if (shortcode == 'bw') {
+    // TODO: Look up shortcode in DB here.
+    if (shortUri == 'bw') {
         exists = true;
-        fullURI = 'http://www.brandwatch.com/';
+        fullUri = 'http://www.brandwatch.com/';
     }
 
     // Redirect
     if (exists) {
-        res.redirect(fullURI);
+        // TODO: Analytics would go here.
+        res.redirect(fullUri);
     } else {
         res.redirect('/not-found');
     }

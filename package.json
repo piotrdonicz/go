@@ -8,6 +8,7 @@
   },
   "private": true,
   "dependencies": {
+    "body-parser": "^1.9.1",
     "express": "^4.1.0",
     "express-handlebars": "^1.0.1"
   },
