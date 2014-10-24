@@ -1,5 +1,10 @@
 'use strict';
 
+
+var fs = require('fs');
+var path = require('path');
+
+
 /**
  * GET: Return the home page containing an empty form.
  */
@@ -35,20 +40,34 @@ exports.notFound = function(req, res) {
  */
 exports.redirect = function(req, res) {
     var shortUri = req.params.shortcode;
-    var exists = false;
     var fullUri = '';
 
-    // TODO: Look up shortcode in DB here.
-    if (shortUri === 'bw') {
-        exists = true;
-        fullUri = 'http://www.brandwatch.com/';
-    }
+    // Read in the URLs from a file for testing purposes.
+    var filename = path.join(__dirname, '..', 'fixtures', 'urimap.json');
 
-    // Redirect
-    if (exists) {
-        // TODO: Analytics would go here.
-        res.redirect(fullUri);
-    } else {
-        res.redirect('/not-found');
-    }
+    fs.readFile(filename, function(err, data) {
+        // If there is and error reading the file...
+        if (err) {
+            console.log(filename, __dirname,  err);
+            return res.sendStatus(500);
+        }
+
+        // If there is an error parsing the file into JSON...
+        try {
+            var uriMap = JSON.parse(data)
+            console.log(uriMap);
+        } catch (err) {
+            console.log('No JSON', err);
+            res.sendStatus(500);
+        }
+
+        // Redirect
+        if (fullUri = uriMap[shortUri]) {
+            // TODO: Analytics would go here.
+            res.redirect(fullUri);
+        } else {
+            console.log('shortUri not found: ' + shortUri)
+            res.render('not-found');
+        }
+    });
 };

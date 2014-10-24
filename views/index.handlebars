@@ -6,18 +6,19 @@
                 <h1 class="panel-title">Create a new Go link</h1>
             </div>
             <div class="panel-body">
-                <form role="form" method="post" action="/">
+                <form role="form" method="post" action="/create-link">
                     <div class="form-group">
-                        <label for="inputLongUrl">
+                        <label for="fullUri">
                             Paste the original URL here
                         </label>
                         <input type="text"
                                 class="form-control"
+                                autofocus
                                 name="fullUri"
                                 placeholder="http://dogr.io/wowgo/suchlongurl/nowmuchshort/amaze.png">
                     </div>
                     <div class="form-group">
-                        <label for="inputCustomUrl">
+                        <label for="shortUri">
                             Enter the short URL you want
                         </label>
                         <div class="input-group">
