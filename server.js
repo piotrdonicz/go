@@ -14,7 +14,8 @@ app.set('view engine', 'handlebars');
 // Routing
 app.get('/', routes.index);
 // app.post('/', routes.shorten);
-// app.get('/:key', routes.redirect);
+app.get('/not-found', routes.notFound);
+app.get('/:shortcode', routes.redirect);
 
 // Server
 var server = app.listen(3000, function() {
