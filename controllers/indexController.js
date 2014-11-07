@@ -6,24 +6,10 @@ var path = require('path');
 
 
 /**
- * GET: Return the home page containing an empty form.
+ * GET: the home page.
  */
 exports.index = function(req, res) {
     res.render('index');
-};
-
-
-/**
- * POST: Process a submitted URL.
- */
-exports.shorten = function(req, res) {
-    var fullUri = req.body.fullUri;
-    var shortUri = req.body.shortUri;
-
-    // TODO: Put the redirect into the DB here
-    console.log('Shortening ' + fullUri + ' to ' + shortUri);
-
-    res.redirect('/');
 };
 
 
@@ -36,11 +22,11 @@ exports.notFound = function(req, res) {
 
 
 /**
- * GET: Determines the URL to redirect to based on supplied shortcode.
+ * GET: the URL to redirect to based on supplied shortUri.
  */
 exports.redirect = function(req, res) {
-    var shortUri = req.params.shortcode;
-    var fullUri = '';
+    var shortUri = req.params.shortUri;
+    var fullUri;
 
     // Read in the URLs from a file for testing purposes.
     var filename = path.join(__dirname, '..', 'fixtures', 'urimap.json');
@@ -53,21 +39,24 @@ exports.redirect = function(req, res) {
         }
 
         // If there is an error parsing the file into JSON...
+        var uriMap;
+
         try {
-            var uriMap = JSON.parse(data)
-            console.log(uriMap);
+            uriMap = JSON.parse(data);
         } catch (err) {
             console.log('No JSON', err);
             res.sendStatus(500);
         }
 
         // Redirect
-        if (fullUri = uriMap[shortUri]) {
+        fullUri = uriMap[shortUri];
+        if (fullUri) {
             // TODO: Analytics would go here.
+            console.log('Redirecting to ', fullUri);
             res.redirect(fullUri);
         } else {
-            console.log('shortUri not found: ' + shortUri)
-            res.render('not-found');
+            console.log('shortUri not found: ' + shortUri);
+            // next();
         }
     });
 };

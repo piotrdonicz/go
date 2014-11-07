@@ -9,7 +9,7 @@
   "main": "server.js",
   "private": true,
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon ."
   },
   "dependencies": {
     "body-parser": "^1.9.1",

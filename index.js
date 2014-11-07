@@ -5,15 +5,15 @@
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 var express = require('express');
-var methodOverride = require('method-override');
+// var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 var path = require('path');
 
 
-// Routes
-var routes = require('./routes');
-// var goLink = require('./routes/goLink');
+// Controllers
+var indexController = require('./controllers/indexController');
+// var goLink = require('./controllers/goLink');
 
 
 // Initialise the app.
@@ -29,18 +29,18 @@ mongoose.connect('mongodb://localhost:27017/go?auto_reconnect');
 
 // Schema
 // TODO(allard): the schemas needs to moved to a seperate file or sth.
-var userSchema = new mongoose.Schema({
-    name: String,
-    email: String
-});
-var goLinkSchema = new mongoose.Schema({
+// var UserSchema = new mongoose.Schema({
+//     name: String,
+//     email: String
+// });
+var GoLinkSchema = new mongoose.Schema({
     shortUri: String,
     longUri: String,
     owner: String
 });
 
-var userModel = mongoose.model('users', userSchema);
-var goLinkModel = mongoose.model('golinks', goLinkSchema);
+// var userModel = mongoose.model('users', UserSchema);
+var GoLinkModel = mongoose.model('golinks', GoLinkSchema);
 
 
 // Set view engine.
@@ -54,12 +54,12 @@ app.enable('case sensitive routes');
 app.enable('strict routing');
 
 // Set envirionment variables - DEV
-if ('development' == app.get('env')) {
-  // empty
-}
+// if ('development' === app.get('env')) {
+//   // empty
+// }
 
 // Set envirionment variables - PROD
-if ('production' == app.get('env')) {
+if ('production' === app.get('env')) {
     app.enable('view cache');
 }
 
@@ -70,18 +70,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Routing
-app.get('/', routes.index);
+app.get('/', indexController.index);
 // app.post('/go-link', goLink.add);
 // app.delete('/go-link/:link_id', links.delete);
-// app.get('/not-found', routes.notFound);
-// app.get('/:shortUri', routes.redirect);
+// app.get('/not-found', indexController.notFound);
+// app.get('/:shortUri', indexController.redirect);
 
 
 // START PRACTICE!!!
 // TODO(allard): All of this needs to be moved to it's corresponding modules.
 app.param('shortUri', function(req, res, next, shortUri) {
     console.log('Matching shortUri: ' + shortUri);
-    goLinkModel.find({shortUri: shortUri}, function(err, docs) {
+    GoLinkModel.find({shortUri: shortUri}, function(err, docs) {
         if (err) {
             res.json(err);
         }
@@ -90,16 +90,16 @@ app.param('shortUri', function(req, res, next, shortUri) {
         next();
     });
 });
-app.get('/go-link', function(req, res){
+app.get('/go-link', function(req, res) {
     // Show all links
-    goLinkModel.find({}, function(err, docs) {
+    GoLinkModel.find({}, function(err, docs) {
         res.json(docs);
-    })
+    });
 });
-app.post('/go-link', function(req, res){
+app.post('/go-link', function(req, res) {
     // Create a new link
     var b = req.body;
-    new goLinkModel({
+    new GoLinkModel({
         shortUri: b.shortUri,
         longUri: b.longUri,
         owner: 'null'
@@ -117,7 +117,7 @@ app.get('/go-link/:shortUri', function(req, res) {
 app.get('/:shortUri', function(req, res) {
     // Redirect
     console.log(res.goLink);
-    var longUri = req.goLink.longUri
+    var longUri = req.goLink.longUri;
     console.log('Redirecting to ', longUri);
     res.redirect(longUri);
 });
