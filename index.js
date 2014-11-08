@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var config = require('./config');
 var exphbs = require('express-handlebars');
 var express = require('express');
+var favicon = require('serve-favicon');
 // var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
@@ -64,6 +65,7 @@ if ('production' === app.get('env')) {
 
 
 // Set pre-route Middleware.
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
