@@ -3,6 +3,7 @@
 
 // Module dependencies.
 var bodyParser = require('body-parser');
+var config = require('./config');
 var exphbs = require('express-handlebars');
 var express = require('express');
 // var methodOverride = require('method-override');
@@ -20,12 +21,11 @@ var indexController = require('./controllers/indexController');
 var app = express();
 
 
-// Set envirionment variables - ALL
-app.set('title', 'Go');
-app.set('port', process.env.PORT || 3000);
+// Set environment variables - ALL
+app.set('port', process.env.PORT || config.http.port);
 
 // Set database.
-mongoose.connect('mongodb://localhost:27017/go?auto_reconnect');
+mongoose.connect(config.mongodb.uri);
 
 // Schema
 // TODO(allard): the schemas needs to moved to a seperate file or sth.
@@ -49,14 +49,13 @@ app.set('view engine', 'handlebars');
 
 // Set logging.
 app.use(morgan('dev'));
-
 app.enable('case sensitive routes');
 app.enable('strict routing');
 
 // Set envirionment variables - DEV
-// if ('development' === app.get('env')) {
-//   // empty
-// }
+if ('development' === app.get('env')) {
+    // app.use(express.errorHandler());
+}
 
 // Set envirionment variables - PROD
 if ('production' === app.get('env')) {
@@ -132,5 +131,5 @@ app.use(function(req, res) {
 
 // Run the server.
 var server = app.listen(app.get('port'), function() {
-    console.log('Listening on port %d', server.address().port);
+    console.log('Express server listening on port', app.get('port'));
 });
