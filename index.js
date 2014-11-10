@@ -1,3 +1,21 @@
+/**
+ *
+ * Go - Brandwatch Internal Custom URL Creator
+ *
+ *         |
+ *        / \
+ *       / _ \
+ *      |.o '.|
+ *      |'._.'|
+ *      |     |
+ *    ,'|  |  |`.
+ *   /  |  |  |  \
+ *   |,-'--|--'-.|
+ *
+ * Main application entry file. This does all the configuration loading, and booting of controllers and custom
+ * error handlers. Please note, the order of loading is important.
+ */
+
 'use strict';
 
 
@@ -7,6 +25,7 @@ var config = require('./config');
 var exphbs = require('express-handlebars');
 var express = require('express');
 var favicon = require('serve-favicon');
+var fs = require('fs');
 // var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
@@ -133,5 +152,11 @@ app.use(function(req, res) {
 
 // Run the server.
 var server = app.listen(app.get('port'), function() {
-    console.log('Express server listening on port', app.get('port'));
+    fs.readFile(path.join(__dirname, 'fixtures', 'LAUNCH_MESSAGE.txt'), 'utf-8', function(err, data) {
+        if (err) {
+            return console.error(err);
+        }
+        console.log(data);
+        console.log('Express server listening on port', app.get('port'));
+    });
 });
