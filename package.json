@@ -1,15 +1,15 @@
 {
   "name": "go",
-  "description": "Go URL shortener",
+  "description": "Go - Brandwatch Internal Custom URL Creator",
   "version": "0.0.1",
   "author": {
     "name": "Allard van Helbergen",
     "email": "allard@brandwatch.com"
   },
-  "main": "server.js",
+  "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "nodemon ."
+    "start": "NODE_ENV=development nodemon ."
   },
   "dependencies": {
     "body-parser": "^1.9.1",

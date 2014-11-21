@@ -1,5 +1,4 @@
 /**
- *
  * Go - Brandwatch Internal Custom URL Creator
  *
  *         |
@@ -32,11 +31,6 @@ var morgan = require('morgan');
 var path = require('path');
 
 
-// Controllers
-var indexController = require('./controllers/indexController');
-// var goLink = require('./controllers/goLink');
-
-
 // Initialise the app.
 var app = express();
 
@@ -46,21 +40,6 @@ app.set('port', process.env.PORT || config.http.port);
 
 // Set database.
 mongoose.connect(config.mongodb.uri);
-
-// Schema
-// TODO(allard): the schemas needs to moved to a seperate file or sth.
-// var UserSchema = new mongoose.Schema({
-//     name: String,
-//     email: String
-// });
-var GoLinkSchema = new mongoose.Schema({
-    shortUri: String,
-    longUri: String,
-    owner: String
-});
-
-// var userModel = mongoose.model('users', UserSchema);
-var GoLinkModel = mongoose.model('golinks', GoLinkSchema);
 
 
 // Set view engine.
@@ -89,60 +68,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// Routing
-app.get('/', indexController.index);
-// app.post('/go-link', goLink.add);
-// app.delete('/go-link/:link_id', links.delete);
-// app.get('/not-found', indexController.notFound);
-// app.get('/:shortUri', indexController.redirect);
-
-
-// START PRACTICE!!!
-// TODO(allard): All of this needs to be moved to it's corresponding modules.
-app.param('shortUri', function(req, res, next, shortUri) {
-    console.log('Matching shortUri: ' + shortUri);
-    GoLinkModel.find({shortUri: shortUri}, function(err, docs) {
-        if (err) {
-            res.json(err);
-        }
-        console.log(docs);
-        req.goLink = docs[0];
-        next();
-    });
-});
-app.get('/go-link', function(req, res) {
-    // Show all links
-    GoLinkModel.find({}, function(err, docs) {
-        res.json(docs);
-    });
-});
-app.post('/go-link', function(req, res) {
-    // Create a new link
-    var b = req.body;
-    new GoLinkModel({
-        shortUri: b.shortUri,
-        longUri: b.longUri,
-        owner: 'null'
-    }).save(function(err, docs) {
-        if (err) {
-            res.json(err);
-        }
-        res.redirect('/');
-    });
-});
-app.get('/go-link/:shortUri', function(req, res) {
-    // Show single link.
-    res.json(req.goLink);
-});
-app.get('/:shortUri', function(req, res) {
-    // Redirect
-    console.log(res.goLink);
-    var longUri = req.goLink.longUri;
-    console.log('Redirecting to ', longUri);
-    res.redirect(longUri);
-});
-// END PRACTICE!!!
-
+// Set Routes.
+require('./controllers')(app);
 
 // Set post-routing Middleware.
 app.use(function(req, res) {
@@ -157,6 +84,6 @@ var server = app.listen(app.get('port'), function() {
             return console.error(err);
         }
         console.log(data);
-        console.log('Express server listening on port', app.get('port'));
+        console.log('Express server listening on http://localhost:' + app.get('port'));
     });
 });
