@@ -1,6 +1,41 @@
 'use strict';
 
 
+var GoLinkModel = require('../models/goLinkModel');
+
+
+/**
+ * GET: Show JSON for all Go Links.
+ */
+exports.findAll = function(req, res) {
+    GoLinkModel.find({}, function(err, docs) {
+        res.json(docs);
+    });
+}
+
+
+/**
+ * GET: Show JSON for Go Link matching a shorturi.
+ */
+exports.findByShortUri = function(req, res) {
+    res.json(req.goLink);
+};
+
+// router.post('/go-link', goLink.add);
+// router.post('/go-link', function(req, res) {
+//     // Create a new link
+//     new GoLinkModel({
+//         shortUri: req.body.shortUri,
+//         longUri: req.body.longUri
+//     }).save(function(err, docs) {
+//         if (err) {
+//             res.json(err);
+//         }
+//         res.redirect('/');
+//     });
+// });
+
+
 /**
  * POST: Create a submitted Go link.
  */

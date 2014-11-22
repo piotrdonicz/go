@@ -1,18 +1,16 @@
+'use strict';
+
+
 var mongoose = require('mongoose');
 
-// var UserSchema = new mongoose.Schema({
-//     name: String,
-//     email: String
-// });
 
 var GoLinkSchema = new mongoose.Schema({
-    shortUri: String,
-    longUri: String,
-    owner: String
+    shortUri: {type: String, trim: true, required: true},
+    longUri: {type: String, trim: true, required: true},
+    owner: {type: mongoose.Schema.Types.ObjectId, default: null, ref: 'User'},
+    created: {type: Date, default: Date.now, required: true}
 });
 
-// var userModel = mongoose.model('users', UserSchema);
-var GoLinkModel = mongoose.model('golinks', GoLinkSchema);
 
-// Export the Mongoose model
-module.exports = GoLinkModel;
+// Expose the model.
+module.exports = mongoose.model('golinks', GoLinkSchema);

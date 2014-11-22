@@ -29,6 +29,7 @@ var fs = require('fs');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 var path = require('path');
+var router = require('./controllers');
 
 
 // Initialise the app.
@@ -69,7 +70,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Set Routes.
-require('./controllers')(app);
+app.use(router);
+
 
 // Set post-routing Middleware.
 app.use(function(req, res) {
