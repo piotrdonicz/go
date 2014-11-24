@@ -10,13 +10,14 @@ You can (soon) find the live version at [go/](http://go/).
 
 ### Prerequisites
 
-You must have MongoDB installed and running.
+You must have MongoDB installed. Use Homebrew to install it.
 
 ### Installing and Running
 
 - Clone this repository.
-- Run `./setup.sh` to install all dependencies.
+- Run `./scripts/setup.sh` to install all dependencies.
 - Optionally populate your database with `./scripts/populateDb.js`
+- Run `mongod` to start the database.
 - Run `npm start` to run the app.
 - Open `http://localhost:3000/` in your browser.
 
@@ -24,6 +25,10 @@ You must have MongoDB installed and running.
 ## Contributing
 
 Yes, please.
+
+- Make your own branch
+- Do epic stuff.
+- Run `grunt` to validate.
 
 
 ## Authors

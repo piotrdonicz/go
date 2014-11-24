@@ -6,25 +6,27 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         // Configure all paths.
-        path: {
-            js: ['*.js', 'routes/**/*.js']
+        paths: {
+            js: [
+                'config/**/*.js',
+                'controllers/**/*.js',
+                'fixtures/**/*.js',
+                'models/**/*.js',
+                'public/**/*.js',
+                'scripts/**/*.js',
+                'views/**/*.js'
+            ]
         },
 
         // Configure all tasks.
         jshint: {
-            all: [
-                '*.js',
-                'routes/**/*.js'
-            ],
+            all: '<%= paths.js %>',
             options: {
                 jshintrc: true
             }
         },
         jscs: {
-            src: [
-                '*.js',
-                'routes/**/*.js'
-            ],
+            src: '<%= paths.js %>',
             options: {
                 config: '.jscsrc'
             }

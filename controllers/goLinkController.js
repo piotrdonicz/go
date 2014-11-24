@@ -11,7 +11,7 @@ exports.findAll = function(req, res) {
     GoLinkModel.find({}, function(err, docs) {
         res.json(docs);
     });
-}
+};
 
 
 /**

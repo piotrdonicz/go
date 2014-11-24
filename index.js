@@ -49,18 +49,16 @@ app.set('view engine', 'handlebars');
 
 // Set logging.
 app.use(morgan('dev'));
-app.enable('case sensitive routes');
-app.enable('strict routing');
 
 // Set envirionment variables - DEV
-if ('development' === app.get('env')) {
-    // app.use(express.errorHandler());
-}
+// if ('development' === app.get('env')) {
+//     app.use(express.errorHandler());
+// }
 
 // Set envirionment variables - PROD
-if ('production' === app.get('env')) {
-    app.enable('view cache');
-}
+// if ('production' === app.get('env')) {
+//     app.enable('view cache');
+// }
 
 
 // Set pre-route Middleware.
@@ -80,7 +78,7 @@ app.use(function(req, res) {
 
 
 // Run the server.
-var server = app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function() {
     fs.readFile(path.join(__dirname, 'fixtures', 'LAUNCH_MESSAGE.txt'), 'utf-8', function(err, data) {
         if (err) {
             return console.error(err);
