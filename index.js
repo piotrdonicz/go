@@ -46,15 +46,15 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GoogleStrategy({
         clientID: '220594915165-cojb9eledf6ejpq2ivosc8umd2epam71.apps.googleusercontent.com',
         clientSecret: 'HClBfN5WAPZlhSna4GrkD8Ez',
-        callbackURL: "http://localhost:3000/auth/google/callback"
+        callbackURL: 'http://localhost:3000/auth/google/callback'
     },
     function(accessToken, refreshToken, profile, done) {
-        if(profile._json.hd === "brandwatch.com"){
+        if(profile._json.hd === 'brandwatch.com'){
             process.nextTick(function () {
                 return done(null, profile);
             });
         } else {
-            done(new Error("Invalid host domain"));
+            done(new Error('Invalid host domain'));
         }
 
     }
