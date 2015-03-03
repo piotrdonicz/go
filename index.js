@@ -24,6 +24,7 @@ var config = require('./config');
 // var errorhandler = ('errorhandler');
 var exphbs = require('express-handlebars');
 var express = require('express');
+var favicon = require('serve-favicon');
 var fs = require('fs');
 // var methodOverride = require('method-override');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -74,14 +75,24 @@ app.set('port', process.env.PORT || config.http.port);
 
 
 app.use(morgan('dev'));  // Logging
-app.use(session({ secret: 'keyboard cat' }));  // Auth
+// Favicon and Static paths need to go before Session middleware to avoid superfluous session creation.
+app.use(favicon(path.join('.', 'public', 'favicon.ico')));
+app.use(express.static(path.join('.', 'public')));
+// TODO(allard); Does this need to be pulled out?
+app.use(session({ secret: 'keyboard cat' }));  // Session Auth
 app.use(passport.initialize());
 app.use(passport.session());
+// TODO(allard); This probably needs to go somewhere nice.
+app.use(function(req, res, next) {
+    res.locals.session = req.session;
+    res.locals.user = req.user;
+    next();
+});
 
 // Set envirionment variables - DEV
-if (process.env.NODE_ENV === 'development') {
-    app.use(errorhandler());
-}
+// if (process.env.NODE_ENV === 'development') {
+//     app.use(errorhandler());
+// }
 
 // Set envirionment variables - PROD
 // if (app.get('env') === 'production') {
