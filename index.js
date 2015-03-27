@@ -20,7 +20,6 @@
 
 // Module dependencies.
 var bodyParser = require('body-parser');
-var config = require('./config');
 var exphbs = require('express-handlebars');
 var express = require('express');
 var favicon = require('serve-favicon');
@@ -33,37 +32,13 @@ var path = require('path');
 var router = require('./routes');
 var session = require('express-session');
 var UserController = require('./controllers/userController');
+var oauthController = require('./controllers/oauthController');
 
-
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
-});
-
-passport.use(new GoogleStrategy({
-        clientID: '220594915165-cojb9eledf6ejpq2ivosc8umd2epam71.apps.googleusercontent.com',
-        clientSecret: 'HClBfN5WAPZlhSna4GrkD8Ez',
-        callbackURL: 'http://localhost:3000/auth/google/callback'
-    },
-    function(accessToken, refreshToken, profile, done) {
-        if (profile._json.hd === 'brandwatch.com') {
-            process.nextTick(function() {
-                return done(null, profile);
-            });
-        } else {
-            done(new Error('Invalid host domain'));
-        }
-
-    }
-));
-
+//initialize authentication
+oauthController.initOauth();
 
 // Set database.
 mongoose.connect(config.mongodb.uri);
-
 
 // Initialise the app.
 var app = express();
